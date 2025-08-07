@@ -1,0 +1,138 @@
+{% extends "mainfolder/index.html" %}
+
+{% load custom_filters %}
+
+    {% load static %}
+
+    {% block body %}
+    {% include 'mainfolder/carsual.html' %}
+        <!-- Single Product Start -->
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-8 col-xl-9">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="border rounded">
+                                    <a href="#">
+                                        <img src="{{ product.image.url }}" class="img-fluid rounded" alt="Image">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h4 class="fw-bold mb-3">{{ product.name }}</h4>
+                                <p class="mb-3">Category : {{ product.category }}</p>
+                                <p>
+                                    <strong>Price:</strong>
+                                    <span class="text-muted text-decoration-line-through me-2">₹ {{ product.price }}</span>
+                                    <span class="text-success fw-bold">₹ {{ product.id|applydiscount }}</span>
+                                </p>
+                                <div class="d-flex mb-4">
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <p class="mb-4">
+                                    {{ product.description }}
+                                </p>
+                                <!-- Add to Cart and Buy Now Buttons -->
+                                <div class="d-flex gap-3">
+                                    <form method="POST" action="#">
+                                        {% csrf_token %}
+                                        <a  href="/add-to-cart/{{product.id}}/" type="submit" class="btn border border-secondary rounded-pill px-4 py-2 text-primary">
+                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to Cart
+                                        </a>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--recent products-->
+                    <div class="col-lg-4 col-xl-3">
+                        <div class="row g-4 fruite">
+                            <div class="col-lg-12">
+                            <div class="mb-4">
+                                <h4 class="mb-3">Latest Products</h4>
+
+                                {% for recent_product in latest_products %}
+                                <div class="d-flex align-items-start gap-2 mb-3">
+                                <!-- Image Section -->
+                                <div class="flex-shrink-0" style="width: 100px; height: 100px; overflow: hidden;">
+                                    {% if recent_product.image %}
+                                    <img src="{{ recent_product.image.url }}" class="img-fluid rounded" style="object-fit: cover; width: 100px; height: 100px;" alt="{{ recent_product.name }}">
+                                    {% else %}
+                                    <img src="{% static 'img/default-item.png' %}" class="img-fluid rounded" style="width: 100px; height: 100px; object-fit: cover;" alt="No image available">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Text Section -->
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-2">
+                                    <a href="/product-detail/{{ recent_product.id }}/" class="text-decoration-none text-dark">
+                                        {{ recent_product.name }}
+                                    </a>
+                                    </h6>
+                                    <div class="d-flex mb-2">
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star text-secondary"></i>
+                                    <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                    <strong class="text-success fw-bold me-2">₹ {{ recent_product.id|applydiscount }}</strong>
+                                    <strong class="text-danger text-decoration-line-through">₹ {{ recent_product.price }}</strong>
+                                    </div>
+                                </div>
+                                </div>
+                                {% endfor %}
+
+                                <!-- View More Button -->
+                                <div class="d-flex justify-content-center my-4">
+                                <a href="{% url 'home' %}" class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">
+                                    View More
+                                </a>
+                                </div>
+
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                </div>
+                <h1 class="fw-bold mb-4">Related Products</h1>
+                <div class="vesitable">
+                    <div class="owl-carousel vegetable-carousel justify-content-center">
+                        {% for related_product in similar_products%}
+                        <div class="border border-primary rounded position-relative vesitable-item">
+                            <div class="vesitable-img" style="height:220px;">
+                                <img src="{{related_product.image.url}}" class="img-fluid w-100 rounded-top" alt="">
+                            </div>
+                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">{{related_product.category}}</div>
+                            <div class="p-4 pb-0 rounded-bottom">
+                                <h4>{{related_product.name}}</h4>
+                                <p>{{related_product.description | truncatechars:50}}</p>
+                                 <p>
+                                    <strong>Price:</strong>
+                                    <span class="text-muted text-decoration-line-through me-2">₹ {{ related_product.price }}</span>
+                                    <span class="text-success fw-bold">₹ {{ related_product.id|applydiscount }}</span>
+                                </p>
+                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                    <a href="/add-to-cart/{{related_product.id}}/" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    <a href="/product-detail/{{related_product.id}}/" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-eye me-2 text-primary"></i>View More</a>
+                                </div>
+                            </div>
+                        </div>
+                         {% empty %}
+                        <p>No similar products found.</p>
+                        {% endfor %}
+                    </div>
+                </div>        
+            </div>
+        </div>
+        <!-- Single Product End -->
+
+       {% endblock %}

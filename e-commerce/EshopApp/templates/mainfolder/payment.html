@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/payment.css' %}"/>
+</head>
+<body>
+  <main class="container">
+    <!-- Payment Method Section -->
+    <div class="payment-section">
+      <h3>Payment Method</h3>
+      <div class="card-box">
+        <h3>Debit or Credit Card</h3>
+        <div class="card-icons">
+          <img src="{% static 'img/visa.png' %}" alt="Visa">
+          <img src="{% static 'img/discover.png' %}" alt="Discover">
+          <img src="{% static 'img/mastercard.png' %}" alt="Mastercard">
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <input type="text" placeholder="Card Holder" name="cardholder" required>
+          <input type="text" placeholder="Card Number" name="cardnumber" required>
+          <div class="row">
+            <input type="text" placeholder="Expire MM/YY" name="expiry" required>
+            <input type="text" placeholder="CVC" name="cvc" required>
+          </div>
+          <div class="save-card">SAVE CARD</div>
+          <button type="submit" class="confirm-btn">Confirm</button>
+        </form>
+      </div>
+
+      <!-- Other Payment Options -->
+      <div class="alt-payments">
+        <img src="{% static 'img/googlepay.png' %}" alt="Google Pay">
+        <img src="{% static 'img/ApplePay.png' %}" alt="Apple Pay">
+        <img src="{% static 'img/paypal.png' %}" alt="PayPal">
+      </div>
+    </div>
+
+    <!-- Order Summary Section -->
+    <div class="summary-section order-summary">
+      <h4>Order Summary</h4>
+      <hr>
+      <p>Order Price: <span>Rs.{{total}}</span></p>
+      <p>Shipping: <span>Rs.0.00</span></p>
+      <p>Tax: <span>Rs.0.00</span></p>
+      <hr>
+      <p class="total">Total: <span>Rs.{{total}}</span></p>
+      <div class="qr-section">
+        <img src="https://cdn-icons-png.flaticon.com/512/714/714390.png" alt="QR Code">
+      </div>
+      <p class="qr-note">Pay and Confirm Order by QR Code Using UPI App</p>
+      <button class="review_btn">Review and Confirm</button>
+
+    </div>
+  </main>
+</body>
+</html>

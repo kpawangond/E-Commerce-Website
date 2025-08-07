@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grocery Booking</title>
+    <!-- Bootstrap CSS (optional) -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        label {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<hr class="mt-0">
+<div class="card shadow m-5" id="signupform">
+    <div class="card-body">
+        <div class="container-fluid">
+            <h5 class="p-2" style="border-bottom: 2px solid orange; color: green;">Confirm Booking Detail</h5>
+
+            <form method="post" name="booking">
+                {% csrf_token %}
+                <div class="row">
+                    <!-- First Name -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input type="text" name="fname" id="fname" class="form-control"
+                                   placeholder="Enter First Name"
+                                   value="{{ user.user.first_name|default:'' }}" readonly pattern="[A-Za-z]+">
+                        </div>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="lname">Last Name</label>
+                            <input type="text" name="lname" id="lname" class="form-control"
+                                   placeholder="Enter Last Name"
+                                   value="{{ user.user.last_name|default:'' }}" readonly pattern="[A-Za-z]+">
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="email">Email ID</label>
+                            <input type="email" name="email" id="email" class="form-control"
+                                   placeholder="Email Address"
+                                   value="{{ user.user.username|default:'' }}" readonly required>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="contact">Contact</label>
+                            <input type="text" name="mobile" id="contact" class="form-control"
+                                   placeholder="Contact Number"
+                                   value="{{ user.mobile|default:'' }}" readonly required>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea name="address" id="address" class="form-control"
+                                      placeholder="Full Address" readonly>{{ user.address|default:'' }}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Total Price -->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="total">Total Price (Rs.)</label>
+                            <input type="text" name="total" id="total" class="form-control"
+                                   value="{{ total|default:'0' }}" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="submit" value="Book Now" class="m-2 px-3 btn btn-primary">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

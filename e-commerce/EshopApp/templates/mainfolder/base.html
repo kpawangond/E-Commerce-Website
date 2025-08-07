@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+        <meta charset="utf-8">
+        <title>E-commerce</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
+            
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="{% static 'css/progress-bar.css' %}" rel="stylesheet" type="text/css"/>
+
+        <!-- Libraries Stylesheet -->
+        <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    </head>
+
+    <body>
+        <!-- Spinner Start -->
+        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" role="status"></div>
+        </div>
+        <!-- Spinner End -->
+        <!-- Navbar start -->
+        <div class="container-fluid fixed-top">
+            <div class="container topbar bg-primary d-none d-lg-block">
+                <div class="d-flex justify-content-between">
+                    <div class="top-info ps-2">
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Siwan, Bihar</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">kumarpawanbca003@gmail.com</a></small>
+                    </div>
+                    <div class="top-link pe-2">
+                        <a href="{% url 'contact' %}" class="text-white"><small class="text-white mx-2">Contact Us</small>/</a>
+                        <a href="{% url 'privacy_policy' %}" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
+                        <a href="{% url 'terms_conditions' %}" class="text-white"><small class="text-white mx-2">Terms & Conditions</small></a>
+                    </div>
+                </div>
+            </div>
+            <div class="container px-0">
+               <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                    <a href="/" class="navbar-brand">
+                        <h1 class="text-primary display-6"><i class="fas fa-store"></i> Online Shop</h1>
+                    </a>
+                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars text-primary"></span>
+                    </button>
+                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                        <div class="navbar-nav mx-auto">
+                            <a href="{% url 'home' %}" class="nav-item nav-link active">
+                                <i class="fas fa-home"></i> Home {{ is_authenticated }}
+                            </a>
+                            <a href="/products/" class="nav-item nav-link">
+                                <i class="fas fa-boxes"></i> Products
+                            </a>
+                            <a href="{% url 'cart' %}" class="me-3 position-relative d-flex align-items-center gap-2">
+                                <i class="fas fa-shopping-cart fa-lg"></i>
+                                <span>Cart</span>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ lengthpro|default:0 }}
+                                </span>
+                                </a>
+                            {% if not request.user.is_authenticated %}
+                                <a href="{% url 'register' %}" class="nav-link">
+                                    <i class="fas fa-user-plus"></i> Sign Up
+                                </a>
+                                <a href="{% url 'login' %}" class="nav-link">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </a>
+                            {% else %}
+                                <a href="/my-order/" class="nav-item nav-link">
+                                    <i class="fas fa-box"></i> My Order
+                                </a>
+                                {% if user.is_authenticated and user.is_staff %}
+                                    <a href="{% url 'admin_login' %}" class="nav-item nav-link"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+                                {% endif %}
+                        </div>
+                        <div>
+                       {% with profile=request.user.profiles.first %}
+                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                                {% if profile and profile.image %}
+                                    <img src="{{ profile.image.url }}" alt="Profile" class="rounded-circle" style="height:50px; width:50px;">
+                                {% else %}
+                                    <img src="{% static 'img/user_avatar.png' %}" alt="Profile" class="rounded-circle" style="height:50px; width:50px;">
+                                {% endif %}
+                                <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user.first_name }}</span>
+                            </a>
+                        {% endwith %}
+                        <!-- End Profile Iamge Icon -->
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"> 
+                                <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{% url 'user_profile' %}">
+                                    <i class="bi bi-person"></i>
+                                    <span>My Profile</span>
+                                </a>
+                                </li>
+                                <li>
+                                <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{% url 'change_password' %}">
+                                    <i class="bi bi-pencil-square"></i>
+                                    <span> Change Password</span>
+                                </a>
+                                </li>
+                                <li>
+                                <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Navbar End -->
+{% include 'partials/messages.html' %}
+
+{% block body %}
+
+{% endblock %}
+
+ <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+            <div class="container py-5">
+                <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
+                    <div class="row g-4">
+                        <div class="col-lg-3">
+                            <a href="#">
+                                <h1 class="text-primary mb-0">E-commerce</h1>
+                                <p class="text-secondary mb-0">Best Products</p>
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="position-relative mx-auto">
+                                <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number" placeholder="Your Email">
+                                <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="d-flex justify-content-end pt-3">
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="https://www.youtube.com/@thecrickday"><i class="fab fa-youtube"></i></a>
+                                <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-5">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-item">
+                            <h4 class="text-light mb-3">Why People Love Shopping With Us!</h4>
+                            <p class="mb-4">
+We blend quality, value, and convenience to deliver an unmatched shopping experience. Trusted by thousands, we offer top-notch products, seamless service, and fast delivery — every time.</p>
+                            <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="d-flex flex-column text-start footer-item">
+                            <h4 class="text-light mb-3">Shop Info</h4>
+                            <a class="btn-link" href="{% url 'contact' %}">Contact Us</a>
+                            <a class="btn-link" href="{% url 'privacy_policy' %}">Privacy Policy</a>
+                            <a class="btn-link" href="{% url 'terms_conditions' %}">Terms & Condition</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-item">
+                            <h4 class="text-light mb-3">Contact Us</h4>
+                            <p>Address : koharwaliya siwan bihar (841239)</p>
+                            <p>Email : kumarpawanbca003@gmail.com</p>
+                            <p>Phone : +8102011426</p>
+                            <p>Payment Accepted</p>
+                            <img src="{% static 'img/payment.png' %}" class="img-fluid" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright bg-dark py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site Name </a>,E-commerce Website</span>
+                    </div>
+                    <div class="col-md-6 my-auto text-center text-md-end text-white">
+                        Designed By <a class="border-bottom">Mr.Pawan kumar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+
+        
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% if messages %}
+        const modal = new bootstrap.Modal(document.getElementById('messageModal'));
+        modal.show();
+        {% endif %}
+    });
+    </script>
+
+    </body>
+
+</html>

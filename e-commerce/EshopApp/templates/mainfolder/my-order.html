@@ -1,0 +1,101 @@
+{% extends 'mainfolder/base.html' %}
+
+{% load static %}
+{% block body %}
+<!-- Order Section Start -->
+<div class="container" id="tracking-order" >
+    <hr/>
+  <h2 class="text-center mb-4">📦 My Orders & Tracking</h2>
+  <hr/>
+  {% if order %}
+    {% for i in order %}
+      <div class="order-card mb-4">
+        <div class="row">
+          <!-- Left: Product List -->
+          <div class="col-md-8 border-end">
+            {% for item in i.items %}
+              <div class="d-flex mb-3 align-items-center border-bottom pb-3">
+                <div>
+                  <img src="{{ item.image }}" alt="product" class="product-image" style="width: 80px; height: 80px; object-fit: cover;">
+                </div>
+                <div class="ms-3 flex-fill">
+                  <h6 class="mb-1">{{ item.name }}</h6>
+                  <p class="mb-0">Qty: {{ item.qty }} | ₹{{ item.price }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Right: Order Details -->
+          <div class="col-md-4 ps-4">
+            <h5 class="mb-3">Order Summary</h5>
+            <p><strong>Order ID:</strong> {{ i.id }}</p>
+            <p><strong>Total:</strong> ₹{{ i.total }}</p>
+            <p><strong>Date:</strong> {{ i.created }}</p>
+
+            <!-- Status -->
+            <div class="mb-2">
+              {% if i.status == 1 %}
+                <span class="badge bg-secondary"><i class="fas fa-receipt"></i> Pending</span>
+              {% elif i.status == 2 %}
+                <span class="badge bg-warning text-dark"><i class="fas fa-cogs"></i> Dispatch</span>
+              {% elif i.status == 3 %}
+                <span class="badge bg-info text-dark"><i class="fas fa-truck-moving"></i> On the Way</span>
+              {% elif i.status == 4 %}
+                <span class="badge bg-success"><i class="fas fa-check-circle"></i> Delivered</span>
+              {% elif i.status == 5 %}
+                <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Cancelled</span>
+              {% elif i.status == 6 %}
+                <span class="badge bg-dark"><i class="fas fa-undo"></i> Returned</span>
+              {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div>
+              {% if i.status < 4 %}
+                <a href="/change-order-status/{{i.id}}/?status=5" class="btn btn-sm btn-outline-danger">Cancel</a>
+              {% elif i.status == 4 %}
+                <a href="/change-order-status/{{i.id}}/?status=6" class="btn btn-sm btn-outline-warning">Return</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-wrapper mt-3">
+          <ol class="ProgressBar d-flex flex-nowrap justify-content-between">
+            {% for step in orderstatus %}
+              <li class="ProgressBar-step {% if step.0 < i.status %}is-complete{% elif step.0 == i.status %}is-current{% endif %}">
+                <svg class="ProgressBar-icon" viewBox="0 0 16 16">
+                  <circle cx="8" cy="8" r="8" fill="none"></circle>
+                  <path d="M5 8l2 2 4-4" stroke="white" stroke-width="3" fill="none"></path>
+                </svg>
+                <span class="ProgressBar-stepLabel">{{ step.1 }}</span>
+              </li>
+            {% endfor %}
+          </ol>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+<!-- Empty Order Card -->
+<div class="d-flex justify-content-center align-items-center my-5">
+  <div class="card shadow-lg border-0 text-center p-5" style="max-width: 500px; background-color: #fff;">
+    <div class="card-body">
+      <div class="mb-4">
+        <i class="fas fa-box-open fa-3x text-muted"></i>
+      </div>
+      <h4 class="card-title text-dark mb-2">No Orders Yet</h4>
+      <p class="card-text text-muted mb-4">You haven't placed any orders yet. Start shopping now and your orders will show up here.</p>
+      <a href="/products/" class="btn btn-warning px-4 rounded-pill">
+        <i class="fas fa-store me-1"></i> Shop Now
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+</div>
+<!-- Order Section End -->
+{% endblock %}
+

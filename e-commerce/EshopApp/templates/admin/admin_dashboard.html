@@ -1,0 +1,267 @@
+{% extends 'admin/admin_base.html' %}
+{% block body %}
+{% load custom_filters %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'admindashboard' %}">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section dashboard">
+    <div class="row">
+      <!-- Left side columns -->
+      <div class="col-lg-12">
+        <div class="row">
+          <!-- Customers Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card customers-card">
+              <div class="card-body">
+                <h5 class="card-title">Total <span>| Users</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{users_count}}</h6>
+                    <a href="{% url 'manage_user' %}"><span class="text-danger small pt-1 fw-bold">View</span>
+                    <span class="text-danger small pt-2 fw-bold">Details >></span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Customers Card -->
+           <!-- Category Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Total <span>| Category</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-collection"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{categories_count}}</h6>
+                    <a href="{% url 'view_category' %}" ><span class="text-success small pt-1 fw-bold">View</span>
+                    <span class="text-success small pt-2 fw-bold">Details >></span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Category Card -->
+          
+          <!-- Product Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Total <span>| Products</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-basket"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{product_counts}}</h6>
+                    <a href="{% url 'view_product' %}"><span class="text-primary small pt-1 fw-bold">View</span>
+                    <span class="text-primary small pt-2 fw-bold">Details >></span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Sales Card -->
+
+          <!-- Orders Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card orders-card">
+              <div class="card-body">
+                <h5 class="card-title">New <span>| Orders</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background-color:#cfe2ff;">
+                    <i class="bi bi-bag-check text-primary"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{new_order}}</h6>
+                    <a href ="/manage-order/?action=1"><span class="text-primary small pt-1 fw-bold">View</span>
+                    <span class="text-primary small pt-2 fw-bold">Details >></span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Orders Card -->
+
+          <!-- Cancel Order Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card visitors-card">
+              <div class="card-body">
+                <h5 class="card-title">Cancel <span>| Orders</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background-color:#f8d7da;">
+                    <i class="bi bi-x-circle-fill text-danger"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ cancel_order }}</h6>
+                    <a href="/manage-order/?action=5">
+                      <span class="text-danger small pt-1 fw-bold">View</span>
+                      <span class="text-danger small pt-2 fw-bold">Details >></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Return Order Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card feedback-card">
+              <div class="card-body">
+                <h5 class="card-title">Return <span>| Orders</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background-color:#fff3cd;">
+                    <i class="bi bi-arrow-counterclockwise text-warning"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ return_order }}</h6>
+                    <a href="/manage-order/?action=6">
+                      <span class="text-warning small pt-1 fw-bold">View</span>
+                      <span class="text-warning small pt-2 fw-bold">Details >></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivered Orders Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card orders-card">
+              <div class="card-body">
+                <h5 class="card-title">Delivered <span>| Orders</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background-color:#d1e7dd;">
+                    <i class="bi bi-truck text-success"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ deliver_order }}</h6>
+                    <a href="/manage-order/?action=4">
+                      <span class="text-success small pt-1 fw-bold">View</span>
+                      <span class="text-success small pt-2 fw-bold">Details >></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Orders Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card visitors-card">
+              <div class="card-body">
+                <h5 class="card-title">Total <span>| Orders</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background-color:#cfe2ff;">
+                    <i class="bi bi-bag text-primary"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ orders_count }}</h6>
+                    <a href="/manage-order/?action=0">
+                      <span class="text-primary small pt-1 fw-bold">View</span>
+                      <span class="text-primary small pt-2 fw-bold">Details >></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Feedback Card -->
+          <div class="col-xxl-4 col-md-4">
+            <div class="card info-card feedback-card">
+              <div class="card-body">
+                <h5 class="card-title">Contact Us <span>| Message</span></h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background-color:#e2e3e5;">
+                    <i class="bi bi-chat-dots-fill text-secondary"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{contact_msg}}</h6>
+                    <span class="text-danger small pt-1 fw-bold">View</span>
+                    <span class="text-danger small pt-2  fw-bold">Details</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Sales -->
+          <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                  <h5 class="card-title">Recent <span>| Orders</span></h5>
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for latest_order in recent_orders %}
+                      <tr>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{latest_order.user.first_name}}  {{latest_order.user.last_name}}</td>
+                        <td>
+                          {% with latest_order.product|get_product as products %}
+                            {% for product in products %}
+                              {{ product.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                          {% endwith %}
+                        </td>
+                        <td>{{latest_order.id}}</td>
+                        <td>₹ {{latest_order.total}}</td>
+                        <td>
+                          {% if latest_order.status == 1 %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                          {% elif latest_order.status == 2 %}
+                            <span class="badge bg-info text-dark">Dispatch</span>
+                          {% elif latest_order.status == 3 %}
+                            <span class="badge bg-primary">On the way</span>
+                          {% elif latest_order.status == 4 %}
+                            <span class="badge bg-success">Delivered</span>
+                          {% elif latest_order.status == 5 %}
+                            <span class="badge bg-danger">Cancelled</span>
+                          {% elif latest_order.status == 6 %}
+                            <span class="badge bg-secondary">Returned</span>
+                          {% else %}
+                            <span class="badge bg-light text-dark">{{ latest_order.get_status_display }}</span>
+                          {% endif %}
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales --> 
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Uncomment these sections below the dashboard cards if needed later -->
+
+
+
+</main>
+{% endblock %}

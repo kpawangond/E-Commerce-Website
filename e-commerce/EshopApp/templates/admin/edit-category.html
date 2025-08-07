@@ -1,0 +1,37 @@
+{% extends 'admin/admin_base.html' %}
+{% block body %}
+
+
+<main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Update Cotegory</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'admindashboard' %}">Home</a></li>
+          <li class="breadcrumb-item active">Cotegory</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+      <div class="card shadow">
+        <div class="card-body">
+            <h5 class="p-2" style="border-bottom: 2px solid orange;">Update Category</h5>
+            <div class="container-fluid">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="m-2">Category Name</label>
+                                <input type="text" name="name" value={{category.name}} class="form-control" placeholder="Category Name">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" value="Updated" class="m-2 px-3 btn btn-primary">
+                </form>
+            </div>
+         </div>
+        </div>
+    </section>
+  </main>
+{% endblock %}

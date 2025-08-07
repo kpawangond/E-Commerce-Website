@@ -1,0 +1,64 @@
+{% extends "mainfolder/base.html" %}
+{% load static %}
+{% block body %}
+   <script>
+        function checkpass() {
+            if (document.signup.password.value !== document.signup.cpwd.value) {
+                alert('Password and Repeat Password field do not match');
+                document.signup.cpwd.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
+<section class="bg-light" style="padding:85px 10px 20px; margin-top:80px">
+<div class="container py-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h5 class="mb-4 text-success" style="border-bottom: 2px solid orange;">Create an Account</h5>
+            <form method="POST" name="signup" onsubmit="return checkpass();" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input type="text" name="fname" class="form-control" placeholder="Enter First Name" required pattern="[A-Za-z]+">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" name="lname" class="form-control" placeholder="Enter Last Name" required pattern="[A-Za-z]+">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email ID</label>
+                        <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Contact</label>
+                        <input type="tel" name="mobile" class="form-control" placeholder="Contact Number" required pattern="[0-9]{10}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Enter Password" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" name="cpwd" class="form-control" placeholder="Enter Password Again" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Upload Picture</label>
+                        <input type="file" name="image" class="form-control" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Address</label>
+                        <textarea name="address" class="form-control" placeholder="Full Address" required></textarea>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary px-4">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</section>
+{% endblock %}
